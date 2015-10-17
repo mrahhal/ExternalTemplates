@@ -15,6 +15,11 @@ namespace ExternalTemplates
 
 		public string GenerateScriptTagFromStream(Stream stream, string name)
 		{
+			if (stream == null)
+				throw new ArgumentNullException(nameof(stream));
+			if (string.IsNullOrWhiteSpace(name))
+				throw new ArgumentException(nameof(name));
+
 			var sb = new StringBuilder();
 
 			sb
