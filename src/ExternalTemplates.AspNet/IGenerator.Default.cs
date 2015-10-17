@@ -13,15 +13,18 @@ namespace ExternalTemplates
 	{
 		private IApplicationEnvironment _appEnvironment;
 		private IGeneratorOptions _options;
+		private IFilesProvider _filesProvider;
 		private ICoreGenerator _coreGenerator;
 
 		public Generator(
 			IApplicationEnvironment appEnvironment,
 			IGeneratorOptions options,
+			IFilesProvider filesProvider,
 			ICoreGenerator coreGenerator)
 		{
 			_appEnvironment = appEnvironment;
 			_options = options;
+			_filesProvider = filesProvider;
 			_coreGenerator = coreGenerator;
 		}
 
@@ -39,11 +42,14 @@ namespace ExternalTemplates
 			var sb = new StringBuilder();
 			foreach (var file in templateFiles)
 			{
-				var fileName = Path.GetFileName(file);
-				var templateName = fileName.Remove(fileName.Length - _options.Extension.Length);
-				sb.Append(
-					_coreGenerator.GenerateScriptTagFromStream(new FileStream(file, FileMode.Open, FileAccess.Read),
-					templateName));
+				var templateName = file.Name.Remove(file.Name.Length - _options.Extension.Length);
+				using (var stream = file.OpenStream())
+				{
+					sb.Append(
+						_coreGenerator.GenerateScriptTagFromStream(
+							stream,
+							templateName));
+				}
 			}
 
 			return new HtmlString(sb.ToString());
@@ -56,10 +62,10 @@ namespace ExternalTemplates
 				_options.VirtualPath);
 		}
 
-		private string[] GetTemplateFiles(string directory)
+		private FileContext[] GetTemplateFiles(string directory)
 		{
-			return Directory.EnumerateFiles(directory)
-				.Where(f => f.EndsWith(_options.Extension))
+			return _filesProvider.EnumerateFilesInDirectory(directory)
+				.Where(f => f.Name.EndsWith(_options.Extension))
 				.ToArray();
 		}
 	}
