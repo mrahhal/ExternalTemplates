@@ -15,6 +15,7 @@ namespace ExternalTemplates
 		private IGeneratorOptions _options;
 		private IFilesProvider _filesProvider;
 		private ICoreGenerator _coreGenerator;
+		private HtmlString _cachedContent;
 
 		public Generator(
 			IApplicationEnvironment appEnvironment,
@@ -35,6 +36,13 @@ namespace ExternalTemplates
 		/// The generated combination of script tags from the external templates.
 		/// </returns>
 		public HtmlString Generate()
+		{
+			return
+				_cachedContent ??
+				(_cachedContent = GenerateCore());
+		}
+
+		private HtmlString GenerateCore()
 		{
 			var templatesDirectory = GetTemplatesDirectory();
 			var templateFiles = GetTemplateFiles(templatesDirectory);
