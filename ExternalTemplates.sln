@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ExternalTemplates.AspNet.Tests", "test\ExternalTemplates.AspNet.Tests\ExternalTemplates.AspNet.Tests.xproj", "{11CD3DCC-7674-49D9-820B-33AFDF5CB84F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalTemplates.Mvc", "src\ExternalTemplates.Mvc\ExternalTemplates.Mvc.csproj", "{F728D13A-BF09-46B3-BF1A-290A046B5E06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{11CD3DCC-7674-49D9-820B-33AFDF5CB84F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11CD3DCC-7674-49D9-820B-33AFDF5CB84F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11CD3DCC-7674-49D9-820B-33AFDF5CB84F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F728D13A-BF09-46B3-BF1A-290A046B5E06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F728D13A-BF09-46B3-BF1A-290A046B5E06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F728D13A-BF09-46B3-BF1A-290A046B5E06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F728D13A-BF09-46B3-BF1A-290A046B5E06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,5 +44,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{59EFF80E-0B92-4C4E-8EBA-3FDAA5E8B412} = {39C1B85D-94DC-4DEB-BB78-DFCEDA3410F4}
 		{11CD3DCC-7674-49D9-820B-33AFDF5CB84F} = {FE8C8295-529F-4FF5-884C-9496E9ABCFDF}
+		{F728D13A-BF09-46B3-BF1A-290A046B5E06} = {39C1B85D-94DC-4DEB-BB78-DFCEDA3410F4}
 	EndGlobalSection
 EndGlobal
