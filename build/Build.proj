@@ -19,7 +19,9 @@
 			Command="dnu restore --quiet --parallel" />
 	</Target>
 	<Target Name="Clean">
-		<RemoveDir Directories="$(RootDir)artifacts" ContinueOnError="true" />
+		<Exec
+			WorkingDirectory="$(RootDir)"
+			Command="rmdir artifacts /s /q" ContinueOnError="true" />
 	</Target>
 	<Target Name="Test" DependsOnTargets="Build">
 		<Exec
