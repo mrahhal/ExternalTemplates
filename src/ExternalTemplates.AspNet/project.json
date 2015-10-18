@@ -3,9 +3,9 @@
   "authors": [ "Mohammad Rahhal" ],
   "description": "ExternalTemplates for AspNet",
   "title": "ExternalTemplates.AspNet",
-  "projectUrl": "",
-  "licenseUrl": "",
-  "tags": [ "" ],
+  "projectUrl": "https://github.com/mrahhal/ExternalTemplates",
+  "licenseUrl": "https://opensource.org/licenses/MIT",
+  "tags": [ "asp", "mvc", "external", "templates" ],
 
   "compilationOptions": {
     "define": [ "ASPNET" ]
