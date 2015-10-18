@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ExternalTemplates.Tests.Fakes;
+using Microsoft.AspNet.Hosting;
 using Microsoft.Dnx.Runtime;
 using Moq;
 using Xunit;
@@ -27,11 +28,11 @@ namespace ExternalTemplates.Tests
 				result.ToString());
 		}
 
-		private Mock<IApplicationEnvironment> CreateAppEnvironmentMock(string basePath)
+		private Mock<IHostingEnvironment> CreateAppEnvironmentMock(string basePath)
 		{
-			var appEnvironment = new Mock<IApplicationEnvironment>();
-			appEnvironment.Setup(ae => ae.ApplicationBasePath).Returns(basePath);
-			return appEnvironment;
+			var hostingEnvironment = new Mock<IHostingEnvironment>();
+			hostingEnvironment.Setup(ae => ae.WebRootPath).Returns(basePath);
+			return hostingEnvironment;
 		}
 
 		private Mock<IFilesProvider> CreateFilesProviderMock()

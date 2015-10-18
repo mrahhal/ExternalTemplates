@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Dnx.Runtime;
 
@@ -11,19 +12,19 @@ namespace ExternalTemplates
 	/// </summary>
 	public class Generator : IGenerator
 	{
-		private IApplicationEnvironment _appEnvironment;
+		private IHostingEnvironment _hostingEnvironment;
 		private IGeneratorOptions _options;
 		private IFilesProvider _filesProvider;
 		private ICoreGenerator _coreGenerator;
 		private HtmlString _cachedContent;
 
 		public Generator(
-			IApplicationEnvironment appEnvironment,
+			IHostingEnvironment hostingEnvironment,
 			IGeneratorOptions options,
 			IFilesProvider filesProvider,
 			ICoreGenerator coreGenerator)
 		{
-			_appEnvironment = appEnvironment;
+			_hostingEnvironment = hostingEnvironment;
 			_options = options;
 			_filesProvider = filesProvider;
 			_coreGenerator = coreGenerator;
@@ -66,7 +67,7 @@ namespace ExternalTemplates
 		private string GetTemplatesDirectory()
 		{
 			return Path.Combine(
-				_appEnvironment.ApplicationBasePath,
+				_hostingEnvironment.WebRootPath,
 				_options.VirtualPath);
 		}
 
