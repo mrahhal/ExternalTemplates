@@ -52,7 +52,7 @@
 						Replace="$(Replace)" />
 	</Target>
 	<Target Name="Build" DependsOnTargets="RestorePackages">
-		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" />
+		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" ToolsVersion="14.0" />
 	</Target>
 	<Target Name="RestorePackages" DependsOnTargets="Clean">
 		<Exec
