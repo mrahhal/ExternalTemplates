@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build;Test" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<RootDir>$(MSBuildProjectDirectory)/../</RootDir>
+		<SolutionFile>$(RootDir)ExternalTemplates.sln</SolutionFile>
+		<PackageOutputDir>$(RootDir)artifacts/packages/</PackageOutputDir>
+	</PropertyGroup>
+	<ItemGroup>
+		<Assemblies Include="ExternalTemplates.Mvc" />
+		<AspNet5Assemblies Include="ExternalTemplates.AspNet" />
+	</ItemGroup>
+
+	<Target Name="Build" DependsOnTargets="RestorePackages">
+		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" />
+	</Target>
+	<Target Name="RestorePackages" DependsOnTargets="Clean">
+		<Exec
+			WorkingDirectory="$(RootDir)"
+			Command="dnu restore --quiet --parallel" />
+	</Target>
+	<Target Name="Clean">
+		<RemoveDir Directories="$(RootDir)artifacts" ContinueOnError="true" />
+	</Target>
+	<Target Name="Test" DependsOnTargets="Build">
+		<Exec
+			WorkingDirectory="$(RootDir)"
+			Command="dnx -p test/ExternalTemplates.AspNet.Tests test" />
+	</Target>
+	<Target Name="Package" DependsOnTargets="Build;Test">
+		<MakeDir Directories="$(RootDir)artifacts/packages" />
+		<Exec
+			WorkingDirectory="$(RootDir)"
+			Command="nuget pack src\%(Assemblies.Identity)\%(Assemblies.Identity).csproj -IncludeReferencedProjects -Symbols -Prop Configuration=Release -OutputDirectory artifacts/packages" />
+	</Target>
+	<Target Name="CopyPackages" AfterTargets="Package">
+		<ItemGroup>
+			<AspNet5Packages Include="$(RootDir)artifacts/bin/%(AspNet5Assemblies.Identity)/Release/*.nupkg" />
+		</ItemGroup>
+		<Copy SourceFiles="@(AspNet5Packages)" DestinationFolder="$(PackageOutputDir)" />
+	</Target>
+</Project>
