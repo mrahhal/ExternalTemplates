@@ -34,7 +34,7 @@
 					  AssemblyFileVersion="$(FullVersion)"
 					  AssemblyInformationalVersion="$(InformationalVersion)" />
 		<PropertyGroup>
-			<Find>"version": "1.0.0-\*"</Find>
+			<Find>"version": ".+"</Find>
 			<Replace>"version": "$(InformationalVersion)"</Replace>
 		</PropertyGroup>
 		<RegexTransform Files="@(AspNet5Assemblies->'$(RootDir)src\%(Identity)\project.json')"
