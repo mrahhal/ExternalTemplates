@@ -49,7 +49,7 @@ Next, register the services:
 
 In your layout file:
 ```
-@inject ExternalTemplates.Generator Generator
+@inject ExternalTemplates.IGenerator Generator
 @Generator.Generate()
 ```
 
