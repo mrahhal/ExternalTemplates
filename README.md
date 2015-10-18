@@ -6,6 +6,7 @@ Finds template files in a pre-configured directory and merges them into a list o
 
 ### Mvc5
 
+[Get the nuget package here](https://www.nuget.org/packages/ExternalTemplates.Mvc/), or:
 ```
 Install-Package ExternalTemplates.Mvc
 ```
@@ -40,12 +41,15 @@ builder.RegisterInstance<GeneratorOptions>(new GeneratorOptions
 
 ### Asp.Net
 
+[Get the nuget package here](https://www.nuget.org/packages/ExternalTemplates.AspNet), or:
 ```
 Install-Package ExternalTemplates.AspNet
 ```
 
 Next, register the services:
-`services.AddExternalTemplates()`
+```
+services.AddExternalTemplates()
+```
 
 In your layout file:
 ```
