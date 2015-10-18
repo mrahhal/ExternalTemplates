@@ -26,6 +26,7 @@
 	<Import Project="Build.tasks" />
 
 	<Target Name="GenerateVersionInfo" BeforeTargets="Build">
+		<MakeDir Directories="$(RootDir)src/Common" ContinueOnError="true" />
 		<AssemblyInfo OutputFile="$(RootDir)src/Common/AssemblyInfo.Common.cs"
 					  AssemblyProduct="$(AssemblyProduct)"
 					  AssemblyCompany="$(AssemblyCompany)"
