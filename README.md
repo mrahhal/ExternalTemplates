@@ -1,6 +1,6 @@
 # ExternalTemplates
 
-Finds template files in a pre-configured directory and merges them into a list of script tags that can be added to a layout file. This way you can use and share the external template in all places without paying for an extra request per template file.
+Finds template files in a pre-configured directory and merges them into a list of script tags that can be added to a layout file. This way you can use and share the external template in all places without paying for an extra request per template file (as with other methods for sharing templates).
 
 # Installation
 
@@ -68,7 +68,7 @@ services.AddExternalTemplates().ConfigureExternalTemplates(options => {
 
 # Usage
 
-The default path for templates is `Content/templates` with an extension `.tmpl.html`. So if you add a file `article.tmpl.html` you can be sure that there will be a script tag with an id of `article-tmpl` available to be used with your templating engine of choice (knockout, moustash, ...).
+The default path for templates is `Content/templates` with an extension `.tmpl.html`. So if you add a file `article.tmpl.html` you can be sure that there will be a script tag with an id of `article-tmpl` available to be used with your templating engine of choice (knockout, moustache, ...).
 
 # License
 MIT
