@@ -215,3 +215,4 @@ pip-log.txt
 #############
 
 project.lock.json
+src/Common/AssemblyInfo.Common.cs
