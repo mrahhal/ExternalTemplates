@@ -9,9 +9,9 @@ namespace ExternalTemplates
 	{
 		/// <summary>
 		/// Gets the path relative to the web root where the templates are stored.
-		/// Default is "/Content/templates".
+		/// Default is "Content/templates".
 		/// </summary>
-		public string VirtualPath { get; set; } = "/Content/templates";
+		public string VirtualPath { get; set; } = "Content/templates";
 
 		/// <summary>
 		/// Gets the extension of the templates.
