@@ -1,7 +1,8 @@
 ﻿{
   "version": "1.0.0-*",
   "authors": [ "Mohammad Rahhal" ],
-  "description": "ExternalTemplates.AspNet Class Library",
+  "description": "ExternalTemplates for AspNet",
+  "title": "ExternalTemplates.AspNet",
   "projectUrl": "",
   "licenseUrl": "",
   "tags": [ "" ],
