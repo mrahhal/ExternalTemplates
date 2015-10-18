@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build;Test" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
+		<Major>1</Major>
+		<Minor>0</Minor>
+		<Patch>1</Patch>
+		<Build>0</Build>
+		<Quality></Quality>
+		<AssemblyProduct>ExternalTemplates for Asp.Net</AssemblyProduct>
+		<AssemblyCompany>MRH</AssemblyCompany>
+		<AssemblyCopyright>Copyright (c) 2015</AssemblyCopyright>
+
+		<Version>$(Major).$(Minor).$(Patch)</Version>
+		<FullVersion>$(Version).$(Build)</FullVersion>
+		<QualityWithDash Condition="'$(Quality)' != ''">-$(Quality)</QualityWithDash>
+		<InformationalVersion>$(Version)$(QualityWithDash)</InformationalVersion>
+
 		<RootDir>$(MSBuildProjectDirectory)/../</RootDir>
 		<SolutionFile>$(RootDir)ExternalTemplates.sln</SolutionFile>
 		<PackageOutputDir>$(RootDir)artifacts/packages/</PackageOutputDir>
@@ -9,7 +23,33 @@
 		<Assemblies Include="ExternalTemplates.Mvc" />
 		<AspNet5Assemblies Include="ExternalTemplates.AspNet" />
 	</ItemGroup>
+	<Import Project="Build.tasks" />
 
+	<Target Name="GenerateVersionInfo" BeforeTargets="Build">
+		<AssemblyInfo OutputFile="$(RootDir)src/Common/AssemblyInfo.Common.cs"
+					  AssemblyProduct="$(AssemblyProduct)"
+					  AssemblyCompany="$(AssemblyCompany)"
+					  AssemblyCopyright="$(AssemblyCopyright)"
+					  AssemblyVersion="$(Version)"
+					  AssemblyFileVersion="$(FullVersion)"
+					  AssemblyInformationalVersion="$(InformationalVersion)" />
+		<PropertyGroup>
+			<Find>"version": "1.0.0-\*"</Find>
+			<Replace>"version": "$(InformationalVersion)"</Replace>
+		</PropertyGroup>
+		<RegexTransform Files="@(AspNet5Assemblies->'$(RootDir)src\%(Identity)\project.json')"
+						Find="$(Find)"
+						Replace="$(Replace)" />
+	</Target>
+	<Target Name="ResetAspNetVersions" AfterTargets="Build">
+		<PropertyGroup>
+			<Find>"version": ".+"</Find>
+			<Replace>"version": "1.0.0-*"</Replace>
+		</PropertyGroup>
+		<RegexTransform Files="@(AspNet5Assemblies->'$(RootDir)src\%(Identity)\project.json')"
+						Find="$(Find)"
+						Replace="$(Replace)" />
+	</Target>
 	<Target Name="Build" DependsOnTargets="RestorePackages">
 		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" />
 	</Target>
