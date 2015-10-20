@@ -5,7 +5,7 @@ Param(
 if ($rebuild)
 {
 	msbuild build/Build.proj /p:Configuration=Release,ShouldRebuild=true /t:Package
-} else
+	https://ci.appveyor.com/project/Daniel15/routejs/build/70} else
 {
 	msbuild build/Build.proj /p:Configuration=Release /t:Package
 }

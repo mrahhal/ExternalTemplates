@@ -11,10 +11,11 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ExternalTemplates.AspNet", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{32BB5098-EB0D-45DB-89DD-BB9DF74BA257}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build-release.ps1 = build-release.ps1
 		build\Build.proj = build\Build.proj
 		build.ps1 = build.ps1
 		global.json = global.json
-		package.ps1 = package.ps1
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ExternalTemplates.AspNet.Tests", "test\ExternalTemplates.AspNet.Tests\ExternalTemplates.AspNet.Tests.xproj", "{11CD3DCC-7674-49D9-820B-33AFDF5CB84F}"

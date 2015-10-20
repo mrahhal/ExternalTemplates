@@ -9,7 +9,8 @@
 		<AssemblyProduct>ExternalTemplates for Asp.Net</AssemblyProduct>
 		<AssemblyCompany>MRH</AssemblyCompany>
 		<AssemblyCopyright>Copyright (c) 2015</AssemblyCopyright>
-		<ShouldRebuild Condition="'$(ShouldRebuild)' == ''">false</ShouldRebuild>
+		<BuildType Condition="'$(BuildType)' == ''">Dev</BuildType>
+		<BuildType Condition="'$(APPVEYOR_REPO_TAG)' == 'true'">Release</BuildType>
 
 		<Version>$(Major).$(Minor).$(Patch)</Version>
 		<FullVersion>$(Version).$(Build)</FullVersion>
@@ -35,7 +36,12 @@
 					  AssemblyVersion="$(Version)"
 					  AssemblyFileVersion="$(FullVersion)"
 					  AssemblyInformationalVersion="$(InformationalVersion)" />
+		<Time Format="HHmmssff-yyyyMMdd">
+			<Output TaskParameter="FormattedTime" PropertyName="Date" />
+		</Time>
 		<PropertyGroup>
+			<InfoVersion Condition="'$(BuildType)' == 'Release'">$(InformationalVersion)</InfoVersion>
+			<InfoVersion Condition="'$(BuildType)' != 'Release'">$(InformationalVersion)-dev-$(Date)</InfoVersion>
 			<Find>"version": ".+"</Find>
 			<Replace>"version": "$(InformationalVersion)"</Replace>
 		</PropertyGroup>
@@ -53,8 +59,7 @@
 						Replace="$(Replace)" />
 	</Target>
 	<Target Name="Build" DependsOnTargets="RestorePackages">
-		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" ToolsVersion="14.0" Condition="$(ShouldRebuild)" />
-		<MSBuild Projects="$(SolutionFile)" Targets="Build" ToolsVersion="14.0" Condition="!$(ShouldRebuild)" />
+		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" ToolsVersion="14.0" />
 	</Target>
 	<Target Name="RestorePackages" DependsOnTargets="Clean">
 		<Exec

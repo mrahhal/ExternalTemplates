@@ -1,0 +1,1 @@
+msbuild build/Build.proj /p:Configuration=Release,BuildType=Release
