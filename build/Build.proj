@@ -29,13 +29,6 @@
 
 	<Target Name="GenerateVersionInfo" BeforeTargets="Build">
 		<MakeDir Directories="$(RootDir)src/Common" ContinueOnError="true" />
-		<AssemblyInfo OutputFile="$(RootDir)src/Common/AssemblyInfo.Common.cs"
-					  AssemblyProduct="$(AssemblyProduct)"
-					  AssemblyCompany="$(AssemblyCompany)"
-					  AssemblyCopyright="$(AssemblyCopyright)"
-					  AssemblyVersion="$(Version)"
-					  AssemblyFileVersion="$(FullVersion)"
-					  AssemblyInformationalVersion="$(InformationalVersion)" />
 		<Time Format="HHmmssff-yyyyMMdd">
 			<Output TaskParameter="FormattedTime" PropertyName="Date" />
 		</Time>
@@ -43,8 +36,15 @@
 			<InfoVersion Condition="'$(BuildType)' == 'Release'">$(InformationalVersion)</InfoVersion>
 			<InfoVersion Condition="'$(BuildType)' != 'Release'">$(InformationalVersion)-dev-$(Date)</InfoVersion>
 			<Find>"version": ".+"</Find>
-			<Replace>"version": "$(InformationalVersion)"</Replace>
+			<Replace>"version": "$(InfoVersion)"</Replace>
 		</PropertyGroup>
+		<AssemblyInfo OutputFile="$(RootDir)src/Common/AssemblyInfo.Common.cs"
+					  AssemblyProduct="$(AssemblyProduct)"
+					  AssemblyCompany="$(AssemblyCompany)"
+					  AssemblyCopyright="$(AssemblyCopyright)"
+					  AssemblyVersion="$(Version)"
+					  AssemblyFileVersion="$(FullVersion)"
+					  AssemblyInformationalVersion="$(InfoVersion)" />
 		<RegexTransform Files="@(AspNet5Assemblies->'$(RootDir)src\%(Identity)\project.json')"
 						Find="$(Find)"
 						Replace="$(Replace)" />
