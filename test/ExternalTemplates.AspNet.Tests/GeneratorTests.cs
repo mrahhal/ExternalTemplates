@@ -41,7 +41,7 @@ namespace ExternalTemplates.Tests
 
 			provider
 				.Setup(p => p.EnumerateFilesInDirectory(It.IsAny<string>()))
-				.Returns(new List<FileContext>
+				.Returns(() => new List<FileContext>
 				{
 					new FakeFileContext("C:/wwwroot/Content/templates/foo.tmpl.html", "foo"),
 					new FakeFileContext("C:/wwwroot/Content/templates/bar.tmpl.html", "bar"),
