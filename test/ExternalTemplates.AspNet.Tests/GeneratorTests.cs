@@ -14,11 +14,11 @@ namespace ExternalTemplates.Tests
 		public void Generate()
 		{
 			// Arrange
-			var appEnvironment = CreateAppEnvironmentMock("C:/wwwroot/");
+			var hostingEnvironment = CreateHostingEnvironmentMock("C:/wwwroot/");
 			var options = new GeneratorOptions();
 			var filesProvider = CreateFilesProviderMock();
 			var coreGenerator = new CoreGenerator(options);
-			var generator = new Generator(appEnvironment.Object, options, filesProvider.Object, coreGenerator);
+			var generator = new Generator(hostingEnvironment.Object, options, filesProvider.Object, coreGenerator);
 
 			// Act
 			var result = generator.Generate();
@@ -33,11 +33,12 @@ namespace ExternalTemplates.Tests
 		public void Generate_WithCacheKind_Always()
 		{
 			// Arrange
-			var appEnvironment = CreateAppEnvironmentMock("C:/wwwroot/");
+			var hostingEnvironment = CreateHostingEnvironmentMock("C:/wwwroot/");
+			hostingEnvironment.Setup(h => h.EnvironmentName).Returns(EnvironmentName.Production);
 			var options = new GeneratorOptions() { CacheKind = CacheKind.Always };
 			var filesProvider = CreateFilesProviderMock();
 			var coreGenerator = new CoreGenerator(options);
-			var generator = new Generator(appEnvironment.Object, options, filesProvider.Object, coreGenerator);
+			var generator = new Generator(hostingEnvironment.Object, options, filesProvider.Object, coreGenerator);
 
 			// Act
 			var result = generator.Generate();
@@ -51,11 +52,12 @@ namespace ExternalTemplates.Tests
 		public void Generate_WithCacheKind_Never()
 		{
 			// Arrange
-			var appEnvironment = CreateAppEnvironmentMock("C:/wwwroot/");
+			var hostingEnvironment = CreateHostingEnvironmentMock("C:/wwwroot/");
+			hostingEnvironment.Setup(h => h.EnvironmentName).Returns(EnvironmentName.Development);
 			var options = new GeneratorOptions() { CacheKind = CacheKind.Never };
 			var filesProvider = CreateFilesProviderMock();
 			var coreGenerator = new CoreGenerator(options);
-			var generator = new Generator(appEnvironment.Object, options, filesProvider.Object, coreGenerator);
+			var generator = new Generator(hostingEnvironment.Object, options, filesProvider.Object, coreGenerator);
 
 			// Act
 			var result = generator.Generate();
@@ -65,7 +67,45 @@ namespace ExternalTemplates.Tests
 			Assert.NotSame(result, result2);
 		}
 
-		private Mock<IHostingEnvironment> CreateAppEnvironmentMock(string basePath)
+		[Fact]
+		public void Generate_WithCacheKind_RemoteOnly_InDevelopment()
+		{
+			// Arrange
+			var hostingEnvironment = CreateHostingEnvironmentMock("C:/wwwroot/");
+			hostingEnvironment.Setup(h => h.EnvironmentName).Returns(EnvironmentName.Development);
+			var options = new GeneratorOptions() { CacheKind = CacheKind.RemoteOnly };
+			var filesProvider = CreateFilesProviderMock();
+			var coreGenerator = new CoreGenerator(options);
+			var generator = new Generator(hostingEnvironment.Object, options, filesProvider.Object, coreGenerator);
+
+			// Act
+			var result = generator.Generate();
+			var result2 = generator.Generate();
+
+			// Assert
+			Assert.NotSame(result, result2);
+		}
+
+		[Fact]
+		public void Generate_WithCacheKind_RemoteOnly_InProduction()
+		{
+			// Arrange
+			var hostingEnvironment = CreateHostingEnvironmentMock("C:/wwwroot/");
+			hostingEnvironment.Setup(h => h.EnvironmentName).Returns(EnvironmentName.Production);
+			var options = new GeneratorOptions() { CacheKind = CacheKind.RemoteOnly };
+			var filesProvider = CreateFilesProviderMock();
+			var coreGenerator = new CoreGenerator(options);
+			var generator = new Generator(hostingEnvironment.Object, options, filesProvider.Object, coreGenerator);
+
+			// Act
+			var result = generator.Generate();
+			var result2 = generator.Generate();
+
+			// Assert
+			Assert.Same(result, result2);
+		}
+
+		private Mock<IHostingEnvironment> CreateHostingEnvironmentMock(string basePath)
 		{
 			var hostingEnvironment = new Mock<IHostingEnvironment>();
 			hostingEnvironment.Setup(ae => ae.WebRootPath).Returns(basePath);

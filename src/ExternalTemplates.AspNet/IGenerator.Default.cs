@@ -42,11 +42,17 @@ namespace ExternalTemplates
 			switch (_options.CacheKind)
 			{
 				case CacheKind.RemoteOnly:
-#if DEBUG
-					return GenerateCore();
-#else
-					// Fall to CacheKind.Always when in RELEASE
-#endif
+					if (_hostingEnvironment.IsDevelopment())
+					{
+						return GenerateCore();
+					}
+					else
+					{
+						return
+						_cachedContent ??
+						(_cachedContent = GenerateCore());
+					}
+
 				case CacheKind.Always:
 					return
 						_cachedContent ??
