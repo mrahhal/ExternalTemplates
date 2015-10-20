@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build\Build.proj = build\Build.proj
 		build.ps1 = build.ps1
 		global.json = global.json
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ExternalTemplates.AspNet.Tests", "test\ExternalTemplates.AspNet.Tests\ExternalTemplates.AspNet.Tests.xproj", "{11CD3DCC-7674-49D9-820B-33AFDF5CB84F}"

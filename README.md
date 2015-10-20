@@ -32,13 +32,13 @@ Register `IGeneratorOptions` to whatever you like. You can use `GeneratorOptions
 An example with autofac:
 ```c#
 builder.RegisterInstance<GeneratorOptions>(new GeneratorOptions
-				{
-					VirtualPath = "Views/templates", // Look for templates in Views/templates. Default is "Content/templates"
-					Extension = ".template.html", // Look for files with extension ".template.html". Default is ".tmpl.html"
-					PostString = "-template" // Append "-template" to the script tag's id. Default is "-tmpl"
-				})
-				.As<IGeneratorOptions>()
-				.SingleInstance();
+	{
+		VirtualPath = "Views/templates", // Look for templates in Views/templates. Default is "Content/templates"
+		Extension = ".template.html", // Look for files with extension ".template.html". Default is ".tmpl.html"
+		PostString = "-template" // Append "-template" to the script tag's id. Default is "-tmpl"
+	})
+	.As<IGeneratorOptions>()
+	.SingleInstance();
 ```
 
 ### Asp.Net
@@ -63,8 +63,8 @@ In your layout file:
 
 ```c#
 services.AddExternalTemplates().ConfigureExternalTemplates(options => {
-    options.VirtualPath = "Views/templates";
-    options.PostString = "-template";
+	options.VirtualPath = "Views/templates";
+	options.PostString = "-template";
 });
 ```
 
