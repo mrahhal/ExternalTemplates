@@ -59,6 +59,9 @@
 	<Target Name="RestorePackages" DependsOnTargets="Clean">
 		<Exec
 			WorkingDirectory="$(RootDir)"
+			Command="nuget restore src\%(Assemblies.Identity)\%(Assemblies.Identity).csproj -SolutionDirectory $(RootDir)" />
+		<Exec
+			WorkingDirectory="$(RootDir)"
 			Command="dnu restore --quiet --parallel" />
 	</Target>
 	<Target Name="Clean">
