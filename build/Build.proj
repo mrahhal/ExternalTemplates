@@ -9,6 +9,7 @@
 		<AssemblyProduct>ExternalTemplates for Asp.Net</AssemblyProduct>
 		<AssemblyCompany>MRH</AssemblyCompany>
 		<AssemblyCopyright>Copyright (c) 2015</AssemblyCopyright>
+		<ShouldRebuild Condition="'$(ShouldRebuild)' == ''">false</ShouldRebuild>
 
 		<Version>$(Major).$(Minor).$(Patch)</Version>
 		<FullVersion>$(Version).$(Build)</FullVersion>
@@ -52,7 +53,8 @@
 						Replace="$(Replace)" />
 	</Target>
 	<Target Name="Build" DependsOnTargets="RestorePackages">
-		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" ToolsVersion="14.0" />
+		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" ToolsVersion="14.0" Condition="$(ShouldRebuild)" />
+		<MSBuild Projects="$(SolutionFile)" Targets="Build" ToolsVersion="14.0" Condition="!$(ShouldRebuild)" />
 	</Target>
 	<Target Name="RestorePackages" DependsOnTargets="Clean">
 		<Exec
