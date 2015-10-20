@@ -4,6 +4,9 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
+    <projectUrl>https://github.com/mrahhal/ExternalTemplates</projectUrl>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <tags>asp mvc external templates</tags>
     <authors>Mohammad Rahhal</authors>
     <owners>Mohammad Rahhal</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
