@@ -214,5 +214,6 @@ pip-log.txt
 
 #############
 
+.vs/
 project.lock.json
 src/Common/AssemblyInfo.Common.cs
