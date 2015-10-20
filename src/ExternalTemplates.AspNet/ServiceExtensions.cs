@@ -12,7 +12,7 @@ namespace ExternalTemplates
 		public static IServiceCollection AddExternalTemplates(this IServiceCollection services)
 		{
 			services.AddSingleton<IGeneratorOptions, GeneratorOptions>(
-				provider => provider.GetRequiredService<IOptions<GeneratorOptions>>().Options);
+				provider => provider.GetRequiredService<IOptions<GeneratorOptions>>().Value);
 			services.AddSingleton<IFilesProvider, FilesProvider>();
 			services.AddSingleton<ICoreGenerator, CoreGenerator>();
 			services.AddSingleton<IGenerator, Generator>();

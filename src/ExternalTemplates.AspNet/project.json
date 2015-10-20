@@ -1,23 +1,29 @@
 {
   "version": "1.0.0-*",
-  "authors": [ "Mohammad Rahhal" ],
+  "authors": [
+    "Mohammad Rahhal"
+  ],
   "description": "ExternalTemplates for AspNet",
   "title": "ExternalTemplates.AspNet",
   "projectUrl": "https://github.com/mrahhal/ExternalTemplates",
   "licenseUrl": "https://opensource.org/licenses/MIT",
-  "tags": [ "asp", "mvc", "external", "templates" ],
-
+  "tags": [
+    "asp",
+    "mvc",
+    "external",
+    "templates"
+  ],
   "compilationOptions": {
-    "define": [ "ASPNET" ]
+    "define": [
+      "ASPNET"
+    ]
   },
-
   "dependencies": {
-    "Microsoft.AspNet.Http.Abstractions": "1.0.0-beta7",
-    "Microsoft.AspNet.Mvc": "6.0.0-beta7"
+    "Microsoft.AspNet.Http.Abstractions": "1.0.0-beta8",
+    "Microsoft.AspNet.Mvc": "6.0.0-beta8"
   },
-
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {},
     "dnxcore50": {
       "Microsoft.CSharp": "4.0.1-beta-23225",
       "System.Collections": "4.0.11-beta-23225",
