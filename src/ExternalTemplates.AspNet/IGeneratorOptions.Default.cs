@@ -24,5 +24,10 @@ namespace ExternalTemplates
 		/// Default is "-tmpl".
 		/// </summary>
 		public string PostString { get; set; } = "-tmpl";
+
+		/// <summary>
+		/// Gets a value that represents how to cache generated content.
+		/// </summary>
+		public CacheKind CacheKind { get; set; }
 	}
 }

@@ -72,6 +72,9 @@
     <Compile Include="..\Common\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="..\ExternalTemplates.AspNet\CacheKind.cs">
+      <Link>CacheKind.cs</Link>
+    </Compile>
     <Compile Include="..\ExternalTemplates.AspNet\ICoreGenerator.cs">
       <Link>ICoreGenerator.cs</Link>
     </Compile>

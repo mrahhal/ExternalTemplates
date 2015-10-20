@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNet.Hosting;
@@ -38,9 +39,23 @@ namespace ExternalTemplates
 		/// </returns>
 		public HtmlString Generate()
 		{
-			return
-				_cachedContent ??
-				(_cachedContent = GenerateCore());
+			switch (_options.CacheKind)
+			{
+				case CacheKind.RemoteOnly:
+#if DEBUG
+					return GenerateCore();
+#else
+					// Fall to CacheKind.Always when in RELEASE
+#endif
+				case CacheKind.Always:
+					return
+						_cachedContent ??
+						(_cachedContent = GenerateCore());
+
+				case CacheKind.Never:
+					return GenerateCore();
+			}
+			throw new InvalidOperationException();
 		}
 
 		private HtmlString GenerateCore()

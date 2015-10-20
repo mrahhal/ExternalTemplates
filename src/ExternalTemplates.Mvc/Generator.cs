@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -24,9 +25,23 @@ namespace ExternalTemplates
 
 		public static IHtmlString Generate()
 		{
-			return
-				_cachedContent ??
-				(_cachedContent = GenerateCore());
+			switch (_options.CacheKind)
+			{
+				case CacheKind.RemoteOnly:
+#if DEBUG
+					return GenerateCore();
+#else
+					// Fall to CacheKind.Always when in RELEASE
+#endif
+				case CacheKind.Always:
+					return
+						_cachedContent ??
+						(_cachedContent = GenerateCore());
+
+				case CacheKind.Never:
+					return GenerateCore();
+			}
+			throw new InvalidOperationException();
 		}
 
 		private static IHtmlString GenerateCore()

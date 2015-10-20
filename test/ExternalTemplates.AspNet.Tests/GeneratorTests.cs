@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ExternalTemplates.Tests.Fakes;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Dnx.Runtime;
@@ -26,6 +27,42 @@ namespace ExternalTemplates.Tests
 			Assert.Equal(
 				CreateScriptTag("foo-tmpl", "foo") + CreateScriptTag("bar-tmpl", "bar"),
 				result.ToString());
+		}
+
+		[Fact]
+		public void Generate_WithCacheKind_Always()
+		{
+			// Arrange
+			var appEnvironment = CreateAppEnvironmentMock("C:/wwwroot/");
+			var options = new GeneratorOptions() { CacheKind = CacheKind.Always };
+			var filesProvider = CreateFilesProviderMock();
+			var coreGenerator = new CoreGenerator(options);
+			var generator = new Generator(appEnvironment.Object, options, filesProvider.Object, coreGenerator);
+
+			// Act
+			var result = generator.Generate();
+			var result2 = generator.Generate();
+
+			// Assert
+			Assert.Same(result, result2);
+		}
+
+		[Fact]
+		public void Generate_WithCacheKind_Never()
+		{
+			// Arrange
+			var appEnvironment = CreateAppEnvironmentMock("C:/wwwroot/");
+			var options = new GeneratorOptions() { CacheKind = CacheKind.Never };
+			var filesProvider = CreateFilesProviderMock();
+			var coreGenerator = new CoreGenerator(options);
+			var generator = new Generator(appEnvironment.Object, options, filesProvider.Object, coreGenerator);
+
+			// Act
+			var result = generator.Generate();
+			var result2 = generator.Generate();
+
+			// Assert
+			Assert.NotSame(result, result2);
 		}
 
 		private Mock<IHostingEnvironment> CreateAppEnvironmentMock(string basePath)

@@ -19,5 +19,10 @@
 		/// Gets the post string to add to the end of the script tag's id following its name.
 		/// </summary>
 		string PostString { get; set; }
+
+		/// <summary>
+		/// Gets a value that represents how to cache generated content.
+		/// </summary>
+		CacheKind CacheKind { get; set; }
 	}
 }
