@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build;Test" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build;Test;Package" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<Major>1</Major>
 		<Minor>0</Minor>
@@ -29,12 +29,14 @@
 
 	<Target Name="GenerateVersionInfo" BeforeTargets="Build">
 		<MakeDir Directories="$(RootDir)src/Common" ContinueOnError="true" />
-		<Time Format="HHmmssff-yyyyMMdd">
+		<MakeDir Directories="$(PackageOutputDir)" ContinueOnError="true" />
+		<Time Format="HHmmyyyyMMdd">
 			<Output TaskParameter="FormattedTime" PropertyName="Date" />
 		</Time>
 		<PropertyGroup>
+			<!--<InfoVersion Condition="'$(BuildType)' == 'Release'">$(InformationalVersion)</InfoVersion>-->
 			<InfoVersion Condition="'$(BuildType)' == 'Release'">$(InformationalVersion)</InfoVersion>
-			<InfoVersion Condition="'$(BuildType)' != 'Release'">$(InformationalVersion)-dev-$(Date)</InfoVersion>
+			<InfoVersion Condition="'$(BuildType)' != 'Release'">$(InformationalVersion)-d-$(Date)</InfoVersion>
 			<Find>"version": ".+"</Find>
 			<Replace>"version": "$(InfoVersion)"</Replace>
 		</PropertyGroup>
@@ -45,6 +47,7 @@
 					  AssemblyVersion="$(Version)"
 					  AssemblyFileVersion="$(FullVersion)"
 					  AssemblyInformationalVersion="$(InfoVersion)" />
+		<Message Importance="High" Text="$(InfoVersion)" />
 		<RegexTransform Files="@(AspNet5Assemblies->'$(RootDir)src\%(Identity)\project.json')"
 						Find="$(Find)"
 						Replace="$(Replace)" />
@@ -59,7 +62,7 @@
 						Replace="$(Replace)" />
 	</Target>
 	<Target Name="Build" DependsOnTargets="RestorePackages">
-		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" ToolsVersion="14.0" />
+		<MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="Configuration=Release" ToolsVersion="14.0" />
 	</Target>
 	<Target Name="RestorePackages" DependsOnTargets="Clean">
 		<Exec
