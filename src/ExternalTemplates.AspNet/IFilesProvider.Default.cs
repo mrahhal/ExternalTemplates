@@ -7,6 +7,14 @@ namespace ExternalTemplates
 {
 	public class FilesProvider : IFilesProvider
 	{
+		public IEnumerable<string> EnumerateDirectories(string directory)
+		{
+			if (string.IsNullOrWhiteSpace(directory))
+				throw new ArgumentException(nameof(directory));
+
+			return Directory.EnumerateDirectories(directory);
+		}
+
 		public IEnumerable<FileContext> EnumerateFilesInDirectory(string directory)
 		{
 			if (string.IsNullOrWhiteSpace(directory))
