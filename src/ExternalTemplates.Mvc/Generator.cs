@@ -14,6 +14,7 @@ namespace ExternalTemplates
 		private static IFilesProvider _filesProvider;
 		private static ICoreGenerator _coreGenerator;
 		private static IHtmlString _cachedContent;
+		private static string _templatesDirectory;
 
 		static Generator()
 		{
@@ -74,16 +75,10 @@ namespace ExternalTemplates
 
 		private static string GetTemplatesDirectory()
 		{
-			return Path.Combine(
-				_appBasePathProvider.ApplicationBasePath,
-				_options.VirtualPath);
-		}
-
-		private static FileContext[] GetTemplateFiles(string directory)
-		{
-			return _filesProvider.EnumerateFilesInDirectory(directory)
-				.Where(f => f.Name.EndsWith(_options.Extension))
-				.ToArray();
+			return _templatesDirectory ??
+				(_templatesDirectory = Path.Combine(
+					_appBasePathProvider.ApplicationBasePath,
+					_options.VirtualPath));
 		}
 
 		private static T Resolve<T>()
