@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,51 +12,86 @@ namespace ExternalTemplates
 	{
 		private static IApplicationBasePathProvider _appBasePathProvider;
 		private static IGeneratorOptions _options;
-		private static IFilesProvider _filesProvider;
 		private static ICoreGenerator _coreGenerator;
-		private static IHtmlString _cachedContent;
+		private static ConcurrentDictionary<string, IHtmlString> _cachedContent =
+			new ConcurrentDictionary<string, IHtmlString>();
+		private static string[] _defaultGroups = new string[] { "~" };
 		private static string _templatesDirectory;
 
 		static Generator()
 		{
 			_appBasePathProvider = Resolve<IApplicationBasePathProvider>();
 			_options = Resolve<IGeneratorOptions>();
-			_filesProvider = Resolve<IFilesProvider>();
 			_coreGenerator = Resolve<ICoreGenerator>();
 		}
 
 		public static IHtmlString Generate()
 		{
+			return Generate(_defaultGroups);
+		}
+
+		public static IHtmlString Generate(params string[] groups)
+		{
+			if (groups == null)
+			{
+				throw new ArgumentNullException(nameof(groups));
+			}
+			if (groups.Length == 0)
+			{
+				groups = _defaultGroups;
+			}
+
 			switch (_options.CacheKind)
 			{
 				case CacheKind.RemoteOnly:
 					if (HttpContext.Current.IsDebuggingEnabled)
 					{
-						return GenerateCore();
+						return GenerateNew(groups);
 					}
 					else
 					{
-						return GenerateFromCache();
+						return GenerateFromCache(groups);
 					}
 
 				case CacheKind.Always:
-					return GenerateFromCache();
+					return GenerateFromCache(groups);
 
 				case CacheKind.Never:
-					return GenerateCore();
 				default:
+					return GenerateNew(groups);
 			}
 		}
 
-		private static IHtmlString GenerateFromCache()
+		private static IHtmlString GenerateFromCache(string[] groups)
 		{
-			return _cachedContent ?? (_cachedContent = GenerateCore());
+			groups = _coreGenerator.NormalizeGroups(GetTemplatesDirectory(), groups);
+			var sb = new StringBuilder();
+			foreach (var group in groups)
+			{
+				var content = _cachedContent.GetOrAdd(group, (g) =>
+				{
+					return GenerateCore(g);
+				});
+				sb.Append(content.ToString());
+			}
+			return new HtmlString(sb.ToString());
 		}
 
-		private static IHtmlString GenerateCore()
+		private static IHtmlString GenerateNew(string[] groups)
+		{
+			groups = _coreGenerator.NormalizeGroups(GetTemplatesDirectory(), groups);
+			var sb = new StringBuilder();
+			foreach (var group in groups)
+			{
+				sb.Append(GenerateCore(group).ToString());
+			}
+			return new HtmlString(sb.ToString());
+		}
+
+		private static IHtmlString GenerateCore(string group)
 		{
 			var templatesDirectory = GetTemplatesDirectory();
-			var templateFiles = GetTemplateFiles(templatesDirectory);
+			var templateFiles = _coreGenerator.GetFilesInGroup(templatesDirectory, group);
 
 			var sb = new StringBuilder();
 			foreach (var file in templateFiles)

@@ -8,11 +8,21 @@ namespace ExternalTemplates
 	public interface IGenerator
 	{
 		/// <summary>
-		/// Generates the templates.
+		/// Generates the top level templates.
+		/// This equivalent to calling <see cref="Generate(string[])"/> with a "~" argument.
 		/// </summary>
 		/// <returns>
 		/// The generated combination of script tags from the external templates.
 		/// </returns>
 		HtmlString Generate();
+
+		/// <summary>
+		/// Generates the templates in the specified groups.
+		/// </summary>
+		/// <param name="groups">The groups to look in for templates.</param>
+		/// <returns>
+		/// The generated combination of script tags from the external templates.
+		/// </returns>
+		HtmlString Generate(params string[] groups);
 	}
 }

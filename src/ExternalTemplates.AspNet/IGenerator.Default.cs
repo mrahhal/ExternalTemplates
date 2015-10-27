@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,61 +16,105 @@ namespace ExternalTemplates
 	{
 		private IHostingEnvironment _hostingEnvironment;
 		private IGeneratorOptions _options;
-		private IFilesProvider _filesProvider;
 		private ICoreGenerator _coreGenerator;
-		private HtmlString _cachedContent;
-		private static string _templatesDirectory;
+		private ConcurrentDictionary<string, HtmlString> _cachedContent =
+			new ConcurrentDictionary<string, HtmlString>();
+		private string[] _defaultGroups = new string[] { "~" };
+		private string _templatesDirectory;
 
 		public Generator(
 			IHostingEnvironment hostingEnvironment,
 			IGeneratorOptions options,
-			IFilesProvider filesProvider,
 			ICoreGenerator coreGenerator)
 		{
 			_hostingEnvironment = hostingEnvironment;
 			_options = options;
-			_filesProvider = filesProvider;
 			_coreGenerator = coreGenerator;
 		}
 
+
 		/// <summary>
-		/// Generates the templates.
+		/// Generates the top level templates.
+		/// This equivalent to calling <see cref="Generate(string[])"/> with a "~" argument.
 		/// </summary>
 		/// <returns>
 		/// The generated combination of script tags from the external templates.
 		/// </returns>
 		public HtmlString Generate()
 		{
+			return Generate(_defaultGroups);
+		}
+
+		/// <summary>
+		/// Generates the templates in the specified groups.
+		/// </summary>
+		/// <param name="groups">The groups to look in for templates.</param>
+		/// <returns>
+		/// The generated combination of script tags from the external templates.
+		/// </returns>
+		/// <exception cref="System.ArgumentNullException">groups is null.</exception>
+		public HtmlString Generate(params string[] groups)
+		{
+			if (groups == null)
+			{
+				throw new ArgumentNullException(nameof(groups));
+			}
+			if (groups.Length == 0)
+			{
+				groups = _defaultGroups;
+			}
+
 			switch (_options.CacheKind)
 			{
 				case CacheKind.RemoteOnly:
 					if (_hostingEnvironment.IsDevelopment())
 					{
-						return GenerateCore();
+						return GenerateNew(groups);
 					}
 					else
 					{
-						return GenerateFromCache();
+						return GenerateFromCache(groups);
 					}
 
 				case CacheKind.Always:
-					return GenerateFromCache();
+					return GenerateFromCache(groups);
 
 				case CacheKind.Never:
-					return GenerateCore();
 				default:
+					return GenerateNew(groups);
 			}
 		}
 
-		private HtmlString GenerateFromCache()
+		private HtmlString GenerateFromCache(string[] groups)
 		{
-			return _cachedContent ?? (_cachedContent = GenerateCore());
+			groups = _coreGenerator.NormalizeGroups(GetTemplatesDirectory(), groups);
+			var sb = new StringBuilder();
+			foreach (var group in groups)
+			{
+				var content = _cachedContent.GetOrAdd(group, (g) =>
+				{
+					return GenerateCore(g);
+				});
+				sb.Append(content.ToString());
+			}
+			return new HtmlString(sb.ToString());
 		}
 
-		private HtmlString GenerateCore()
+		private HtmlString GenerateNew(string[] groups)
+		{
+			groups = _coreGenerator.NormalizeGroups(GetTemplatesDirectory(), groups);
+			var sb = new StringBuilder();
+			foreach (var group in groups)
+			{
+				sb.Append(GenerateCore(group).ToString());
+			}
+			return new HtmlString(sb.ToString());
+		}
+
+		private HtmlString GenerateCore(string group)
 		{
 			var templatesDirectory = GetTemplatesDirectory();
-			var templateFiles = GetTemplateFiles(templatesDirectory);
+			var templateFiles = _coreGenerator.GetFilesInGroup(templatesDirectory, group);
 
 			var sb = new StringBuilder();
 			foreach (var file in templateFiles)
