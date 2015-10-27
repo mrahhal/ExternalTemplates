@@ -72,5 +72,20 @@ services.AddExternalTemplates().ConfigureExternalTemplates(options => {
 
 The default path for templates is `Content/templates` with an extension `.tmpl.html`. So if you add a file `article.tmpl.html` you can be sure that there will be a script tag with an id of `article-tmpl` available to be used with your templating engine of choice (knockout, moustache, ...).
 
+## Groups `(v1.2.0)`
+
+`Generate()` is equivalent to calling `Generate("~")` which will generate top level templates in the templates directory.
+`Generate` takes an array of strings that represents groups that you want to generate. The default behavior is that every subfolder in the templates folder is considered a group.
+
+So if you have the following structure:
+```
+- templates
+	- foo.tmpl.html
+	- group1
+		- bar.tmpl.html
+```
+
+`Generate()` will find `foo.tmpl.html` only, whereas `Generate("group1")` will find `bar.tmpl.html`. If you want to just generate everything (top level + all groups), call `Generate` with an empty string.
+
 # License
 MIT
