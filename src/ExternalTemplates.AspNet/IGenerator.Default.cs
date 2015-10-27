@@ -48,20 +48,21 @@ namespace ExternalTemplates
 					}
 					else
 					{
-						return
-						_cachedContent ??
-						(_cachedContent = GenerateCore());
+						return GenerateFromCache();
 					}
 
 				case CacheKind.Always:
-					return
-						_cachedContent ??
-						(_cachedContent = GenerateCore());
+					return GenerateFromCache();
 
 				case CacheKind.Never:
 					return GenerateCore();
+				default:
 			}
-			throw new InvalidOperationException();
+		}
+
+		private HtmlString GenerateFromCache()
+		{
+			return _cachedContent ?? (_cachedContent = GenerateCore());
 		}
 
 		private HtmlString GenerateCore()
