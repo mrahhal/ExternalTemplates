@@ -11,8 +11,6 @@
 		<AssemblyCopyright>Copyright (c) 2015</AssemblyCopyright>
 		<BuildType Condition="'$(BuildType)' == ''">Dev</BuildType>
 		<BuildType Condition="'$(APPVEYOR_REPO_TAG)' == 'true'">Release</BuildType>
-		<PushPackages>false</PushPackages>
-		<PushPackages Condition="'$(nuget_apikey)' != '' And '$(BuildType)' == 'Release' And '$(APPVEYOR_REPO_TAG)' == 'true'">true</PushPackages>
 
 		<Version>$(Major).$(Minor).$(Patch)</Version>
 		<FullVersion>$(Version).$(Build)</FullVersion>
