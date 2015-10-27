@@ -13,7 +13,6 @@
 		<BuildType Condition="'$(APPVEYOR_REPO_TAG)' == 'true'">Release</BuildType>
 		<PushPackages>false</PushPackages>
 		<PushPackages Condition="'$(nuget_apikey)' != '' And '$(BuildType)' == 'Release' And '$(APPVEYOR_REPO_TAG)' == 'true'">true</PushPackages>
-		<NugetApiKey Condition="$(PushPackages)">$(nuget_apikey)</NugetApiKey>
 
 		<Version>$(Major).$(Minor).$(Patch)</Version>
 		<FullVersion>$(Version).$(Build)</FullVersion>
@@ -96,13 +95,5 @@
 			<AspNet5Packages Include="$(RootDir)artifacts/bin/%(AspNet5Assemblies.Identity)/Release/*.nupkg" />
 		</ItemGroup>
 		<Copy SourceFiles="@(AspNet5Packages)" DestinationFolder="$(PackageOutputDir)" />
-	</Target>
-	<Target Name="PushNugetPackages" AfterTargets="CopyPackages" Condition="$(PushPackages)">
-		<Exec
-			WorkingDirectory="$(RootDir)"
-			Command="nuget push artifacts/packages/%(Assemblies.Identity).$(InfoVersion).nupkg $(NugetApiKey)" />
-		<Exec
-			WorkingDirectory="$(RootDir)"
-			Command="nuget push artifacts/packages/%(AspNet5Assemblies.Identity).$(InfoVersion).nupkg $(NugetApiKey)" />
 	</Target>
 </Project>
