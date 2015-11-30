@@ -1,6 +1,7 @@
 # ExternalTemplates
 
 [![Build status](https://img.shields.io/appveyor/ci/mrahhal/externaltemplates/master.svg)](https://ci.appveyor.com/project/mrahhal/externaltemplates)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Finds template files in a pre-configured directory and merges them into a list of script tags that can be added to a layout file. This way you can use and share the external template in all places without paying for an extra request per template file (as with other methods for sharing templates).
 
@@ -86,6 +87,3 @@ So if you have the following structure:
 ```
 
 `Generate()` will find `foo.tmpl.html` only, whereas `Generate("group1")` will find `bar.tmpl.html`. If you want to just generate everything (top level + all groups), call `Generate` with an empty string.
-
-# License
-MIT
