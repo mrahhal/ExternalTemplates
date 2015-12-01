@@ -5,6 +5,9 @@
 
 Finds template files in a pre-configured directory and merges them into a list of script tags that can be added to a layout file. This way you can use and share the external template in all places without paying for an extra request per template file (as with other methods for sharing templates).
 
+## Note
+For AspNet5: don't use this, it's much better to use gulp to do something equivalent.
+
 # Installation
 
 ### Mvc5
