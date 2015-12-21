@@ -67,7 +67,7 @@
 	<Target Name="RestorePackages" DependsOnTargets="Clean">
 		<Exec
 			WorkingDirectory="$(RootDir)"
-			Command="nuget restore src\%(Assemblies.Identity)\%(Assemblies.Identity).csproj -SolutionDirectory $(RootDir)" />
+			Command="nuget restore ExternalTemplates.sln" />
 		<Exec
 			WorkingDirectory="$(RootDir)"
 			Command="dnu restore --quiet --parallel" />
