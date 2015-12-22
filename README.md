@@ -1,6 +1,7 @@
 # ExternalTemplates
 
 [![Build status](https://img.shields.io/appveyor/ci/mrahhal/externaltemplates/master.svg)](https://ci.appveyor.com/project/mrahhal/externaltemplates)
+[![Nuget version](https://img.shields.io/nuget/v/ExternalTemplates.AspNet.svg)](https://www.nuget.org/packages/ExternalTemplates.AspNet)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Finds template files in a pre-configured directory and merges them into a list of script tags that can be added to a layout file. This way you can use and share the external template in all places without paying for an extra request per template file (as with other methods for sharing templates).
